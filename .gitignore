@@ -4,3 +4,9 @@ client/dist/bundle.js.map
 server/config.js
 coverage
 aws-demo.pem
+product.csv
+features.csv
+photos.csv
+related.csv
+skus.csv
+styles.csv

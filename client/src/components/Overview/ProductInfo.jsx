@@ -14,6 +14,7 @@ function ProductInfo({}) {
     }
     axios.get( `/products/${productId}`)
     .then(results => {
+      console.log('\n \n In the product info', results.data, '\n \n');
       setInfo(results.data);
     });
   }, [productId]);
