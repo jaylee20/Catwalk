@@ -99,7 +99,7 @@ const ProductCard = ({ product_id, mode }) => {
   const [reviews, setReviews] = useState(() => null);
 
   const getMeta = (product_id) => {
-    return axios.get(`/reviews/meta?product_id=${product_id}`);
+    return axios.get(`/reviews/meta/?product_id=${product_id}`);
   };
 
   const getStyles = (product_id) => {
@@ -111,7 +111,7 @@ const ProductCard = ({ product_id, mode }) => {
   }
 
   const getReviews = (product_id) => {
-    return axios.get(`/reviews?product_id=${product_id}`);
+    return axios.get(`/reviews/?product_id=${product_id}`);
   }
 
   const handleAdd = () => {
