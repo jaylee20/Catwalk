@@ -36,7 +36,7 @@ module.exports = {
       if (err) {
         callback(err)
       } else {
-        callback(null, data)
+        callback(null, data.rows[0])
       }
     })
   },
@@ -45,7 +45,7 @@ module.exports = {
       if (err) {
         callback(err)
       } else {
-        callback(null, data.rows[0])
+        callback(null, data.rows[0].related)
       }
     })
   }

@@ -59,12 +59,6 @@ export default function Overview(props) {
         setCurrStyle(defaultStyle(r.data.results));
       })
       .catch((err) => console.log("get info error, "));
-    // axios
-    //   .get('/api/test')
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => console.log("get info error, "));
   }, [productId]);
 
   return (

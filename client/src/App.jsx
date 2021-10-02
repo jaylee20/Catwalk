@@ -109,7 +109,7 @@ const App = () => {
           <svg xmlns="http://www.w3.org/2000/svg" fill="pink" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>
         </ScrollButton>
           <SharedContext.Provider value={{ productId, setProductId, currentOutfit, setCurrentOutfit, theme }}>
-          <Navbar theme={theme} toggleTheme={toggleTheme} searchFunc={changeProdId}/>
+          {/* <Navbar theme={theme} toggleTheme={toggleTheme} searchFunc={changeProdId}/> */}
           <Overview product_id={productId}/>
           <br />
           <br />
@@ -127,7 +127,7 @@ const App = () => {
           <br />
           <br />
           <h2 style={{ textAlign: 'center' }}>have any questions?</h2>
-          <StyledDivider>{isDarkTheme? <StyledImg src='https://i.imgur.com/ZC0BXZY.png' /> : <StyledImg src='https://i.imgur.com/EqtyDcb.png' />}</StyledDivider>
+          {/* <StyledDivider>{isDarkTheme? <StyledImg src='https://i.imgur.com/ZC0BXZY.png' /> : <StyledImg src='https://i.imgur.com/EqtyDcb.png' />}</StyledDivider>
           <br />
           <div className='QandA'>
             <QAwidget
@@ -142,7 +142,7 @@ const App = () => {
           <RatingsAndReviews id={productId} />
           <br />
           <br />
-          <br />
+          <br /> */}
           <Footer />
           </SharedContext.Provider>
         </div>
