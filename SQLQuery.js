@@ -97,4 +97,41 @@ with feature as (
 	limit 5;
 `
 
-module.exports = { topFiveProducts, productStyle, productDetail, relatedProducts };
+const deleteProduct =
+`
+delete from products where id = $1;
+`
+const deleteStyle =
+`
+delete from styles where id = $1;
+`
+const deleteFeature =
+`
+delete from features where id = $1;
+`
+const deletePhoto =
+`
+delete from photos where id = $1;
+`
+const deleteSku =
+`
+delete from skus where id = $1;
+`
+const deleteRelatedProductID =
+`
+delete from relatedproducts where related_product_id = $1;
+`
+
+module.exports = {
+	topFiveProducts,
+	productStyle,
+	productDetail,
+	relatedProducts,
+	deleteProduct,
+	deleteStyle,
+	deleteFeature,
+	deletePhoto,
+	deleteSku,
+	deleteRelatedProductID
+};
+

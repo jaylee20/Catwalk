@@ -38,7 +38,7 @@ CREATE TABLE styles (
   original_price VARCHAR ( 100 ) NOT NULL,
   default_style BOOLEAN NOT NULL,
   FOREIGN KEY (productId)
-  REFERENCES products (id)
+  REFERENCES products (id) ON DELETE CASCADE
 );
 
 CREATE TABLE photos (
@@ -88,3 +88,23 @@ COPY skus (id, styleId, size, quantity )
 FROM '/Users/jaylee/SDC/skus.csv'
 DELIMITER ','
 CSV HEADER;
+
+--Feature Index
+create index feature_product_id
+on features(product_id);
+
+--Sku Index
+create index skus_style_id
+on skus(styleid);
+
+--Photo Index
+create index photos_style_id
+on photos(styleid);
+
+--Style ID Index
+create index styles_product_id
+on styles(productid);
+
+--Related Products Index
+create index related_product_id
+on relatedproducts(current_product_id);

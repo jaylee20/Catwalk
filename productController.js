@@ -1,6 +1,17 @@
 const { Client } = require('pg');
 const { POSTGRES_USER, POSTGRES_PASSWORD } = require('./server/config.js');
-const { topFiveProducts, productStyle, productDetail, relatedProducts } = require('./SQLQuery.js');
+const {
+  topFiveProducts,
+  productStyle,
+  productDetail,
+  relatedProducts,
+  deleteProduct,
+	deleteStyle,
+	deleteFeature,
+	deletePhoto,
+	deleteSku,
+	deleteRelatedProductID
+} = require('./SQLQuery.js');
 
 const client = new Client({
   user: POSTGRES_USER,
@@ -12,8 +23,10 @@ const client = new Client({
 
 client.connect();
 
+const deleteQueries = [deleteProduct, deleteStyle, deleteFeature, deletePhoto, deleteSku, deleteRelatedProductID];
+
 module.exports = {
-  products: (callback) => {
+  getProducts: (callback) => {
     client.query(topFiveProducts, (err, data) => {
       if (err) {
         callback(err)
@@ -22,7 +35,7 @@ module.exports = {
       }
     })
   },
-  productInfo: (productID, callback) => {
+  getProductInfo: (productID, callback) => {
     client.query(productDetail, [productID], (err, data) => {
       if (err) {
         callback(err)
@@ -31,7 +44,7 @@ module.exports = {
       }
     })
   },
-  productStyles: (productID, callback) => {
+  getProductStyles: (productID, callback) => {
     client.query(productStyle, [productID], (err, data) => {
       if (err) {
         callback(err)
@@ -40,7 +53,7 @@ module.exports = {
       }
     })
   },
-  relatedProduct: (productID, callback) => {
+  getRelatedProducts: (productID, callback) => {
     client.query(relatedProducts, [productID], (err, data) => {
       if (err) {
         callback(err)
@@ -48,5 +61,16 @@ module.exports = {
         callback(null, data.rows[0].related)
       }
     })
-  }
+  },
+  deleteFromProducts: (id, requestIndex, callback) => {
+    const query = deleteQueries[requestIndex];
+    client.query(query, [id], (err, data) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null, 'Successful Delete')
+      }
+    })
+  },
+
 }
