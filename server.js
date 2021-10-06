@@ -75,13 +75,7 @@ app.get('/*', (req, res) => {
 });
 
 app.post('/*', (req, res) => {
-  axios.post(`${API_URL}${req.url}`, req.body, axiosConfig)
-  .then((response) => {
-    res.send(response.status);
-  })
-  .catch((error) => {
-    res.send(`Error making POST request: ${error}`);
-  });
+
 });
 
 app.put('/*', (req, res) => {

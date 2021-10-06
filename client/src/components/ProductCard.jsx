@@ -203,7 +203,7 @@ const ProductCard = ({ product_id, mode }) => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}>
           <StyledThumbnail style={{ backgroundImage: `url(${previewImage})` }}>
-            {isOutfit ? <RemoveButton aria-label='Close modal' onClick={handleRemoval} /> : <div onClick={toggleModal} style={{ cursor: 'pointer' }}>
+            {isOutfit ? <RemoveButton aria-label='Close modal' onClick={handleRemoval} /> : <div onClick={toggleModal} data-testid="comparison-modal" style={{ cursor: 'pointer' }}>
               <Star/>
             </div>}
           </StyledThumbnail>

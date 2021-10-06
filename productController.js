@@ -1,4 +1,5 @@
-const { Client } = require('pg');
+const Redis = require('redis');
+const { Client, Pool } = require('pg');
 const { POSTGRES_USER, POSTGRES_PASSWORD } = require('./server/config.js');
 const {
   topFiveProducts,
@@ -10,24 +11,29 @@ const {
 	deleteFeature,
 	deletePhoto,
 	deleteSku,
-	deleteRelatedProductID
+	deleteRelatedProductID,
+  characteristic_review
 } = require('./SQLQuery.js');
 
-const client = new Client({
+const redisClient = Redis.createClient();
+const TTL = 3600;
+
+const pool = new Pool({
   user: POSTGRES_USER,
-  host: '127.0.0.1',
+  host: 'ec2-18-119-133-12.us-east-2.compute.amazonaws.com',
   database: 'products',
   password: POSTGRES_PASSWORD,
   port: 5432,
 });
 
-client.connect();
+
+pool.connect();
 
 const deleteQueries = [deleteProduct, deleteStyle, deleteFeature, deletePhoto, deleteSku, deleteRelatedProductID];
 
 module.exports = {
   getProducts: (callback) => {
-    client.query(topFiveProducts, (err, data) => {
+    pool.query(topFiveProducts, (err, data) => {
       if (err) {
         callback(err)
       } else {
@@ -36,35 +42,74 @@ module.exports = {
     })
   },
   getProductInfo: (productID, callback) => {
-    client.query(productDetail, [productID], (err, data) => {
-      if (err) {
-        callback(err)
+    redisClient.get(`productID_${productID}`, (error, product) => {
+      if (error) {
+        callback(error);
+      } else if (product !== null) {
+        callback(null, JSON.parse(product));
       } else {
-        callback(null, data.rows[0])
+        pool.query(productDetail, [productID], (err, data) => {
+          if (err) {
+            callback(err)
+          } else {
+            redisClient.setex(`productID_${productID}`, TTL, JSON.stringify(data.rows[0]))
+            callback(null, data.rows[0])
+          }
+        })
       }
     })
   },
   getProductStyles: (productID, callback) => {
-    client.query(productStyle, [productID], (err, data) => {
-      if (err) {
-        callback(err)
+    redisClient.get(`product_style_${productID}`, (error, product) => {
+      if (error) {
+        callback(error);
+      } else if (product !== null) {
+        callback(null, JSON.parse(product));
       } else {
-        callback(null, data.rows[0])
+        pool.query(productStyle, [productID], (err, data) => {
+          if (err) {
+            callback(err)
+          } else {
+            // If undefined
+            if (!data.rows[0]) {
+              redisClient.setex(`product_style_${productID}`, TTL, JSON.stringify(null))
+              callback(null, data.rows[0])
+            } else {
+              redisClient.setex(`product_style_${productID}`, TTL, JSON.stringify(data.rows[0]))
+              callback(null, data.rows[0])
+            }
+          }
+        })
       }
     })
   },
   getRelatedProducts: (productID, callback) => {
-    client.query(relatedProducts, [productID], (err, data) => {
-      if (err) {
-        callback(err)
+    redisClient.get(`related_product_${productID}`, (error, related) => {
+      if (error) {
+        callback(error);
+      } else if (related !== null) {
+        callback(null, JSON.parse(related));
       } else {
-        callback(null, data.rows[0].related)
+        pool.query(relatedProducts, [productID], (err, data) => {
+          if (err) {
+            callback(err)
+          } else {
+            // If undefined
+            if (!data.rows[0].related) {
+              redisClient.setex(`related_product_${productID}`, TTL, JSON.stringify(null))
+              callback(null, data.rows[0].related)
+            } else {
+              redisClient.setex(`related_product_${productID}`, TTL, JSON.stringify(data.rows[0].related))
+              callback(null, data.rows[0].related)
+            }
+          }
+        })
       }
     })
   },
   deleteFromProducts: (id, requestIndex, callback) => {
     const query = deleteQueries[requestIndex];
-    client.query(query, [id], (err, data) => {
+    pool.query(query, [id], (err, data) => {
       if (err) {
         callback(err)
       } else {
@@ -72,5 +117,4 @@ module.exports = {
       }
     })
   },
-
 }

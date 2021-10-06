@@ -36,7 +36,7 @@ group by styleid
 ), styleWithPhotoSku as (
 	select s.*, jps.skus, jps.photos
 	from singleStyle s
-	join joinedPhotoSku jps
+	left join joinedPhotoSku jps
 	on s.id = jps.styleid
 ), combined as (
 	select
@@ -68,10 +68,10 @@ with feature as (
 	select *
 	from products where id = $1
 )
-	select p.*, f.features from products p
-	join feature f
+	select p.*, f.features
+	from product p
+	left join feature f
 	on p.id = f.product_id;
-
 `
 
 const relatedProducts =
@@ -122,6 +122,40 @@ const deleteRelatedProductID =
 delete from relatedproducts where related_product_id = $1;
 `
 
+const characteristic_review =
+`
+with insert_review as (
+	insert into
+		reviews(id, product_id, rating, date, summary, body, recommend, reviewer_name)
+		VALUES((select max(id)+1 from reviews), $1, $2, $3, $4, $5, $6, $7)
+	returning id, product_id
+), count_of_characteristics as (
+	select count(id)
+	from "characteristics" c
+	where product_id = $1
+), max_numbers as (
+	select id, row_number() over (PARTITION by 1) as rn from generate_series((select max(id) + 1 from characteristic_reviews), (select (max(id) + (select * from count_of_characteristics))  from characteristic_reviews)) as id
+), product_characteristics as (
+	select c.id as characteristic_id, ir.id as review_id
+	from "characteristics" c
+	join insert_review ir
+	on c.product_id = ir.product_id
+), final_product_characterisitcs as (
+	select pc.characteristic_id as characteristic_id, pc.review_id as review_id, tv.result as value, row_number() over (PARTITION by 1) as rn
+	from product_characteristics pc
+	join temp_reviews tv --temp table with values
+	on pc.characteristic_id = tv.characteristic_id
+),combined_table as (
+	select mn.id, fpc.characteristic_id, fpc.review_id, fpc.value
+	from max_numbers mn
+	full join final_product_characterisitcs fpc
+	on mn.rn = fpc.rn
+)
+insert into characteristic_reviews(id, characteristic_id, review_id, value)
+select * from combined_table
+;
+`
+
 module.exports = {
 	topFiveProducts,
 	productStyle,
@@ -132,6 +166,7 @@ module.exports = {
 	deleteFeature,
 	deletePhoto,
 	deleteSku,
-	deleteRelatedProductID
+	deleteRelatedProductID,
+	characteristic_review
 };
 
