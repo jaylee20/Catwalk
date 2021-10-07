@@ -4,8 +4,8 @@ const express = require("express");
 const compression = require('compression')
 const app = express();
 const port = 3000;
-const config = require('./server/config.js');
-const { getProducts, getProductInfo, getProductStyles, getRelatedProducts, deleteFromProducts } = require('./productController.js');
+const config = require('./config/config.js');
+const { getProducts, getProductInfo, getProductStyles, getRelatedProducts, deleteFromProducts } = require('./db/productController.js');
 const axios = require('axios');
 const API_URL = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo';
 
