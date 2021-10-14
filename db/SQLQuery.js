@@ -96,6 +96,8 @@ with feature as (
 	on p.id = f.product_id
 	limit 5;
 `
+// offset $1 rows
+// fetch first $2 row only
 
 const deleteProduct =
 `

@@ -3,7 +3,7 @@ const path = require("path")
 const express = require("express");
 const compression = require('compression')
 const app = express();
-const port = 3000;
+const port = 3004;
 const config = require('./config/config.js');
 const { getProducts, getProductInfo, getProductStyles, getRelatedProducts, deleteFromProducts } = require('./db/productController.js');
 const axios = require('axios');
@@ -31,6 +31,11 @@ app.get('/*', (req, res) => {
 	switch (firstRoute) {
 		case 'products':
 			if (splitURL.length === 1) {
+				// const data = {
+				// 	page: req.query.page || 0,
+				// 	count: req.query.count || 5
+				// };
+
 				getProducts((err, data) => {
 					if (err) {
 						res.status(404).send(err);
@@ -38,7 +43,9 @@ app.get('/*', (req, res) => {
 						res.status(200).send(data);
 					}
 				})
+
 			}
+
 			const id = splitURL[1]
 			if (splitURL[2] === 'styles') {
 				getProductStyles(id, (err, data) => {

@@ -21,7 +21,7 @@ export let options = {
 };
 
 export default function () {
-  const BASE_URL = 'http://localhost:3000/products'; // make sure this is not production
+  const BASE_URL = 'http://localhost:3005/products'; // make sure this is not production
 
   const productID =  Math.round((Math.random() * (1000000 - 1)) + 1);
 
