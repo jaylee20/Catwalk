@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "server": "nodemon server.js",
+    "products": "psql postgres -U jaylee < products.sql",
     "transpile": "npx webpack --config webpack.config.js --mode development -w",
+    "productK6": "k6 run productK6.js",
     "lint": "eslint \"**/*.js\" \"**/*.jsx\" --ignore-pattern node_modules/ --ignore-pattern dist/"
   },
   "repository": {
@@ -30,10 +32,13 @@
     "babel-loader": "^8.2.2",
     "bootstrap": "^5.1.1",
     "compression": "^1.7.4",
+    "cypress": "^8.5.0",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "msw": "^0.35.0",
+    "newrelic": "^8.4.0",
     "node-fetch": "^3.0.0",
+    "pg": "^8.7.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
@@ -43,6 +48,7 @@
     "react-test-renderer": "^17.0.2",
     "react-toggle": "^4.1.2",
     "react-transition-group": "^4.4.2",
+    "redis": "^3.1.2",
     "styled-components": "^5.3.1",
     "webpack": "^5.52.1"
   },

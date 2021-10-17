@@ -37,6 +37,7 @@ export default function Overview(props) {
   const [currStyle, setCurrStyle] = useState(null);
 
   const defaultStyle = (s) => {
+    console.log('\n \n  In the overview, this is product style', s, '\n \n ');
     let styleIndex = 0;
     for (var i = 0; i < s.length; i++) {
       if (s[i]["default?"]) {

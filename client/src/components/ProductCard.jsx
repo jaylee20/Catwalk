@@ -95,12 +95,12 @@ const ProductCard = ({ product_id, mode }) => {
   const [salePrice, setSalePrice] = useState(() => null);
   const [isLoaded, setIsLoaded] = useState(() => false);
   const [isModalOpen, setIsModalOpen] = useState(() => false);
-  const [meta, setMeta] = useState(() => null);
-  const [reviews, setReviews] = useState(() => null);
+  // const [meta, setMeta] = useState(() => null);
+  // const [reviews, setReviews] = useState(() => null);
 
-  const getMeta = (product_id) => {
-    return axios.get(`/reviews/meta?product_id=${product_id}`);
-  };
+  // const getMeta = (product_id) => {
+  //   return axios.get(`/reviews/meta/?product_id=${product_id}`);
+  // };
 
   const getStyles = (product_id) => {
     return axios.get(`/products/${product_id}/styles`);
@@ -110,9 +110,9 @@ const ProductCard = ({ product_id, mode }) => {
     return axios.get(`/products/${product_id}`);
   }
 
-  const getReviews = (product_id) => {
-    return axios.get(`/reviews?product_id=${product_id}`);
-  }
+  // const getReviews = (product_id) => {
+  //   return axios.get(`/reviews/?product_id=${product_id}`);
+  // }
 
   const handleAdd = () => {
     setCurrentOutfit((prevOutfit) => {
@@ -146,10 +146,11 @@ const ProductCard = ({ product_id, mode }) => {
       Promise.all([
         getProductInfo(product_id),
         getStyles(product_id),
-        getMeta(product_id),
-        getReviews(product_id)
+        // getMeta(product_id),
+        // getReviews(product_id)
       ])
-      .then(([info, styles, meta, reviewsData]) => {
+      // meta, reviewsData]
+      .then(([info, styles]) => {
         setCategory(info.data.category);
         setName(info.data.name);
         if (styles.data.results[0].photos[0].thumbnail_url) {
@@ -159,8 +160,8 @@ const ProductCard = ({ product_id, mode }) => {
         }
         setPrice(styles.data.results[0].original_price);
         setSalePrice(styles.data.results[0].sale_price);
-        setMeta(meta.data);
-        setReviews(reviewsData.data.results.length);
+        // setMeta(meta.data);
+        // setReviews(reviewsData.data.results.length);
         setIsLoaded(true);
       })
       .catch((err) => console.error(err));
@@ -202,14 +203,14 @@ const ProductCard = ({ product_id, mode }) => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}>
           <StyledThumbnail style={{ backgroundImage: `url(${previewImage})` }}>
-            {isOutfit ? <RemoveButton aria-label='Close modal' onClick={handleRemoval} /> : <div onClick={toggleModal} style={{ cursor: 'pointer' }}>
+            {isOutfit ? <RemoveButton aria-label='Close modal' onClick={handleRemoval} /> : <div onClick={toggleModal} data-testid="comparison-modal" style={{ cursor: 'pointer' }}>
               <Star/>
             </div>}
           </StyledThumbnail>
           <br />
           <strong>{name}</strong>
           <br />
-          <RatingStar mode='ProductCard' ratings={meta.ratings} /> <span>({reviews})</span>
+          {/* <RatingStar mode='ProductCard' ratings={meta.ratings} /> <span>({reviews})</span> */}
           <br />
           {category}
           <br />

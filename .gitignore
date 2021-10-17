@@ -4,3 +4,9 @@ client/dist/bundle.js.map
 server/config.js
 coverage
 aws-demo.pem
+product_csv
+txt.txt
+SQLQueries.txt
+newrelic.js
+newrelic_agent.log
+config
