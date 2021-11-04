@@ -49,7 +49,7 @@ Project Catwalk is a system design project, where a database and server(s) will 
     - **Purpose:**
       - This README documents and describes the Product Information API endpoint that is used by the client-side web application.
     - **Link:**
-      - [Product Information README](https://github.com/jaylee20/Shop_with_Rob/blob/main/server/README.md)
+      - [Product Information README](https://github.com/jaylee20/Catwalk/blob/main/server/README.md)
       <p></p>
 
 ---
