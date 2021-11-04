@@ -1,10 +1,9 @@
 node_modules
 client/dist/bundle.js
 client/dist/bundle.js.map
-server/config.js
 coverage
 aws-demo.pem
-product_csv
+data/mock_data
 txt.txt
 SQLQueries.txt
 newrelic.js

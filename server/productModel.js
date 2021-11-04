@@ -1,23 +1,22 @@
 const Redis = require('redis');
-const { Client, Pool } = require('pg');
-const { POSTGRES_USER, POSTGRES_PASSWORD } = require('../config/config.js');
+const { Pool } = require('pg');
+const { POSTGRES_USER, POSTGRES_PASSWORD } = require('../config/config');
 const {
   topFiveProducts,
   productStyle,
   productDetail,
   relatedProducts,
   deleteProduct,
-	deleteStyle,
-	deleteFeature,
-	deletePhoto,
-	deleteSku,
-	deleteRelatedProductID,
-  characteristic_review
-} = require('./SQLQuery.js');
+  deleteStyle,
+  deleteFeature,
+  deletePhoto,
+  deleteSku,
+  deleteRelatedProductID,
+} = require('./db/SQLQuery');
 
 const redisClient = Redis.createClient({
-  host:'ec2-3-131-119-148.us-east-2.compute.amazonaws.com',
-  port: 6379
+  host: 'ec2-3-131-119-148.us-east-2.compute.amazonaws.com',
+  port: 6379,
 });
 const TTL = 3600;
 
@@ -29,22 +28,24 @@ const pool = new Pool({
   port: 5432,
 });
 
-
 pool.connect();
 
-const deleteQueries = [deleteProduct, deleteStyle, deleteFeature, deletePhoto, deleteSku, deleteRelatedProductID];
+const deleteQueries = [
+  deleteProduct, deleteStyle, deleteFeature, deletePhoto, deleteSku, deleteRelatedProductID,
+];
 
 module.exports = {
   getProducts: (data, callback) => {
-    const { page, count } = data;
-    // [page, count],
-    pool.query(topFiveProducts, (err, data) => {
+    const page = data.page || 1;
+    const count = data.count || 5;
+
+    pool.query(topFiveProducts, [page, count], (err, result) => {
       if (err) {
-        callback(err)
+        callback(err);
       } else {
-        callback(null, data.rows)
+        callback(null, result.rows);
       }
-    })
+    });
   },
   getProductInfo: (productID, callback) => {
     redisClient.get(`productID_${productID}`, (error, product) => {
@@ -55,14 +56,14 @@ module.exports = {
       } else {
         pool.query(productDetail, [productID], (err, data) => {
           if (err) {
-            callback(err)
+            callback(err);
           } else {
-           redisClient.setex(`productID_${productID}`, TTL, JSON.stringify(data.rows[0]))
-            callback(null, data.rows[0])
+            redisClient.setex(`productID_${productID}`, TTL, JSON.stringify(data.rows[0]));
+            callback(null, data.rows[0]);
           }
-        })
+        });
       }
-    })
+    });
   },
   getProductStyles: (productID, callback) => {
     redisClient.get(`product_style_${productID}`, (error, product) => {
@@ -73,20 +74,15 @@ module.exports = {
       } else {
         pool.query(productStyle, [productID], (err, data) => {
           if (err) {
-            callback(err)
+            callback(err);
           } else {
-            // If undefined
-            if (!data.rows[0]) {
-              redisClient.setex(`product_style_${productID}`, TTL, JSON.stringify(null))
-              callback(null, data.rows[0])
-            } else {
-              redisClient.setex(`product_style_${productID}`, TTL, JSON.stringify(data.rows[0]))
-              callback(null, data.rows[0])
-            }
+            const results = data.rows[0] || null;
+            redisClient.setex(`product_style_${productID}`, TTL, JSON.stringify(results));
+            callback(null, results);
           }
-        })
+        });
       }
-    })
+    });
   },
   getRelatedProducts: (productID, callback) => {
     redisClient.get(`related_product_${productID}`, (error, related) => {
@@ -97,29 +93,24 @@ module.exports = {
       } else {
         pool.query(relatedProducts, [productID], (err, data) => {
           if (err) {
-            callback(err)
+            callback(err);
           } else {
-            // If undefined
-            if (!data.rows[0].related) {
-              redisClient.setex(`related_product_${productID}`, TTL, JSON.stringify(null))
-              callback(null, data.rows[0].related)
-            } else {
-              redisClient.setex(`related_product_${productID}`, TTL, JSON.stringify(data.rows[0].related))
-              callback(null, data.rows[0].related)
-            }
+            const results = data.rows[0].related || null;
+            redisClient.setex(`related_product_${productID}`, TTL, JSON.stringify(results));
+            callback(null, results);
           }
-        })
+        });
       }
-    })
+    });
   },
   deleteFromProducts: (id, requestIndex, callback) => {
     const query = deleteQueries[requestIndex];
-    pool.query(query, [id], (err, data) => {
+    pool.query(query, [id], (err) => {
       if (err) {
-        callback(err)
+        callback(err);
       } else {
-        callback(null, 'Successful Delete')
+        callback(null, 'Successful Delete');
       }
-    })
+    });
   },
-}
+};

@@ -60,32 +60,32 @@ CREATE TABLE skus (
 );
 
 COPY products (id, name, slogan, description, category, default_price)
-FROM '/Users/jaylee/SDC/product_csv/product.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/product.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY relatedProducts (id, current_product_id, related_product_id)
-FROM '/Users/jaylee/SDC/product_csv/related.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/related.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY features (id, product_id, feature, value )
-FROM '/Users/jaylee/SDC/product_csv/features.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/features.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY styles (id, productId, name, sale_price, original_price, default_style)
-FROM '/Users/jaylee/SDC/product_csv/styles.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/styles.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY photos (id, styleId, url, thumbnail_url)
-FROM '/Users/jaylee/SDC/product_csv/photos.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/photos.csv'
 DELIMITER ','
 CSV HEADER;
 
 COPY skus (id, styleId, size, quantity )
-FROM '/Users/jaylee/SDC/product_csv/skus.csv'
+FROM '/Users/jaylee/Catwalk/data/mock_data/skus.csv'
 DELIMITER ','
 CSV HEADER;
 

@@ -21,7 +21,6 @@ const RelatedProducts = () => {
     getRelatedProducts(productId)
     .then(results => {
       let unique = [...new Set(results.data)];
-      console.log('\n \n  In the Related Products.jsx', unique, '\n \n')
       setRelatedProducts(unique);
       setIsLoaded(true);
     })

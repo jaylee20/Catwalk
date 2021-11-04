@@ -4,10 +4,8 @@
 
 ## Project Description:
 
-Build out RESTful API's to support the refreshed and modernized retail web-portal. These new RESTful API's will replace the existing API's, and will provide a back end system that can scale to meet the demands of production traffic.
+Project Catwalk is a system design project, where a database and server(s) will be implemented to meet the system requirements of a refreshed modern retail web-portal. The back end system will then be deployed and scaled to support production level traffic (with a minimum) of 1,000 requests per second on one or multiple Amazon Web Services EC2 t2.micro instance with 200 millisecond average response time (or better) and zero error rate.
 
-<p></p>
-The goal of project Catwalk is to design a database and server that meet the requirements of the retail web-portal. The back end system will then be deployed and scaled to support (a minimum of) 1,000 requests per second on one or multiple Amazon Web Services EC2 t2.micro instance with zero error rate.
 <p></p>
 
 ---
@@ -16,7 +14,7 @@ The goal of project Catwalk is to design a database and server that meet the req
 
 - **Front-End:** JavaScript, React, Styled Components
 - **Back-End:** Node.js, Express, PostgreSQL, Redis Cache, Nginx, Docker
-- **Testing:** Jest, React Testing Library, K6, LoaderIO, NewRelic
+- **Testing:** Jest, React Testing Library, Cypress, CircleCI, K6, LoaderIO, NewRelic
 
 ---
 
@@ -41,6 +39,18 @@ The goal of project Catwalk is to design a database and server that meet the req
    4. Replace 'USER' with your PostgreSQL username.
    5. Replace 'PASSWORD' with your PostgreSQL password.
    <p></p>
+
+---
+
+## Links To Other README's Within This Repository:
+
+1.  **API Documentation - Product Information:**
+
+    - **Purpose:**
+      - This README documents and describes the Product Information API endpoint that is used by the client-side web application.
+    - **Link:**
+      - [Product Information README](https://github.com/jaylee20/Shop_with_Rob/blob/main/server/README.md)
+      <p></p>
 
 ---
 

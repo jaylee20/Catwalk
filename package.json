@@ -1,21 +1,21 @@
 {
   "name": "fec",
   "version": "1.0.0",
-  "description": "FEC Project",
+  "description": "SDC Project",
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "server": "nodemon server.js",
+    "server": "nodemon server/server.js",
     "products": "psql postgres -U jaylee < products.sql",
     "transpile": "npx webpack --config webpack.config.js --mode development -w",
-    "productK6": "k6 run productK6.js",
+    "productK6": "k6 run testing/k6/productK6.js",
     "lint": "eslint \"**/*.js\" \"**/*.jsx\" --ignore-pattern node_modules/ --ignore-pattern dist/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marvelous-maitake/fec.git"
   },
-  "author": "Kody, Crystal, Yue, Josh",
+  "author": "| Front-End: Kody, Crystal, Yue, Josh | Back-End: Katherine, Tim, Jay |",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/marvelous-maitake/fec/issues"

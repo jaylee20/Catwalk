@@ -1,5 +1,5 @@
-const productStyle =
-`
+/* eslint-disable no-tabs */
+const productStyle = `
 with sku as (
 	select
 		styleid,
@@ -55,10 +55,9 @@ group by styleid
 	group by productid
 )
 select * from combined;
-`
+`;
 
-const productDetail =
-`
+const productDetail = `
 with feature as (
 	select product_id, json_agg(json_build_object('feature', feature, 'value', value)) as features
 	from features f
@@ -72,17 +71,15 @@ with feature as (
 	from product p
 	left join feature f
 	on p.id = f.product_id;
-`
+`;
 
-const relatedProducts =
-`
+const relatedProducts = `
 select json_agg(related_product_id) as related
 from relatedproducts r
 where current_product_id  = $1;
-`
+`;
 
-const topFiveProducts =
-`
+const topFiveProducts = `
 with feature as (
 	select product_id, json_agg(json_build_object('feature', feature, 'value', value)) as features
 	from features f
@@ -94,38 +91,30 @@ with feature as (
 	select p.*, f.features from products p
 	join feature f
 	on p.id = f.product_id
-	limit 5;
-`
-// offset $1 rows
-// fetch first $2 row only
+	OFFSET $1 ROWS
+	FETCH NEXT $2 ROWS ONLY;
+`;
 
-const deleteProduct =
-`
+const deleteProduct = `
 delete from products where id = $1;
-`
-const deleteStyle =
-`
+`;
+const deleteStyle = `
 delete from styles where id = $1;
-`
-const deleteFeature =
-`
+`;
+const deleteFeature = `
 delete from features where id = $1;
-`
-const deletePhoto =
-`
+`;
+const deletePhoto = `
 delete from photos where id = $1;
-`
-const deleteSku =
-`
+`;
+const deleteSku = `
 delete from skus where id = $1;
-`
-const deleteRelatedProductID =
-`
+`;
+const deleteRelatedProductID = `
 delete from relatedproducts where related_product_id = $1;
-`
+`;
 
-const characteristic_review =
-`
+const characteristicReview = `
 with insert_review as (
 	insert into
 		reviews(id, product_id, rating, date, summary, body, recommend, reviewer_name)
@@ -156,19 +145,18 @@ with insert_review as (
 insert into characteristic_reviews(id, characteristic_id, review_id, value)
 select * from combined_table
 ;
-`
+`;
 
 module.exports = {
-	topFiveProducts,
-	productStyle,
-	productDetail,
-	relatedProducts,
-	deleteProduct,
-	deleteStyle,
-	deleteFeature,
-	deletePhoto,
-	deleteSku,
-	deleteRelatedProductID,
-	characteristic_review
+  topFiveProducts,
+  productStyle,
+  productDetail,
+  relatedProducts,
+  deleteProduct,
+  deleteStyle,
+  deleteFeature,
+  deletePhoto,
+  deleteSku,
+  deleteRelatedProductID,
+  characteristicReview,
 };
-
