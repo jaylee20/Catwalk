@@ -13,7 +13,7 @@ Project Catwalk is a system design project, where a database and server(s) will 
 ## Project Tech Stack:
 
 - **Front-End:** JavaScript, React, Styled Components
-- **Back-End:** Node.js, Express, PostgreSQL, Redis Cache, Nginx, Docker
+- **Back-End:** Node.js, Express, PostgreSQL, Redis, Nginx, Docker
 - **Testing:** Jest, React Testing Library, Cypress, CircleCI, K6, LoaderIO, NewRelic
 
 ---
