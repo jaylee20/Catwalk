@@ -14,7 +14,7 @@
 - **API Data Source**:
   - The Product Information API retrieves data from:
     - A Redis Cache.
-    - If there is a Redis Cache miss, the API will query a PostgreSQL database and then update the Redis Cache.
+    - If there is a Redis Cache miss, the API will query the PostgreSQL database and then update the Redis Cache.
     <p></p>
 - **API Documentation Reference**:
   - [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
