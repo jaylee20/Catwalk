@@ -4,11 +4,17 @@
 
 ## API Information:
 
-- **Purpose:**
+- **API Purpose:**
   - The Product Information API endpoint will:
     1. Show all products in our store.
     2. Provide detailed information for each product.
     3. List any related product(s).
+    4. Delete a product or specific product information.
+    <p></p>
+- **API Data Source**:
+  - The Product Information API retrieves data from:
+    - A Redis Cache.
+    - If there is a Redis Cache miss, the API will query a PostgreSQL database and then update the Redis Cache.
     <p></p>
 - **API Documentation Reference**:
   - [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
@@ -20,10 +26,9 @@
 1. ### List Products [Method: GET Request]:
 
    1. **API End Point:**
-      - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products
-      - Client API: http://localhost:3000/api/products
+      - Client API: http://localhost:3000/products
    2. **Purpose:**
-      - Retrieves the list of products within our store.
+      - Retrieves a list of products within our store.
    3. **Parameters:**
 
       | Parameter | Type    | Description                                               |
@@ -33,12 +38,13 @@
 
       - _Page Parameter_:
 
-        - Page API Endpoint: http://localhost:3000/api/products/?page=[Page Number]
-        - Example: http://localhost:3000/api/products/?page=2
+        - Page API Endpoint: http://localhost:3000/products/?page=[Page Number]
+        - Example: http://localhost:3000/products/?page=2
 
       - _Count Parameter_:
-        - Count API Endpoint: http://localhost:3000/api/products/?count=[Product Count]
-        - Example: http://localhost:3000/api/products/?count=10
+
+        - Count API Endpoint: http://localhost:3000/products/?count=[Product Count]
+        - Example: http://localhost:3000/products/?count=10
 
    4. **Sample Data:**
 
@@ -58,8 +64,7 @@
 2. ### Product Information [Method: GET Request]:
 
    1. **API End Point:**
-      - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id
-      - Client API: http://localhost:3000/api/products/:product_id
+      - Client API: http://localhost:3000/products/[product_id]
    2. **Purpose:**
       - Returns all product level information for a specified product id
    3. **Parameters:**
@@ -69,7 +74,7 @@
       | product_id | integer | Required ID of the Product requested |
 
       - _Product Information Parameter Example_:
-        - http://localhost:3000/api/products/61576
+        - http://localhost:3000/products/11
 
    4. **Sample Data:**
 
@@ -97,17 +102,16 @@
 3. ### Product Styles [Method: GET Request]:
 
    1. **API End Point:**
-      - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id/styles
-      - Client API: http://localhost:3000/api/products/:product_id/style
+      - Client API: http://localhost:3000/products/[product_id]/style
    2. **Purpose:**
-      - Returns the all styles available for the given product.
+      - Returns all style information available for a given product.
    3. **Parameters:**
       | Parameter | Type | Description |
       | ---------- | ------- | ------------------------------------ |
       | product_id | integer | Required ID of the Product requested |
 
       - _Product Styles Parameter Example_:
-        - http://localhost:3000/api/products/61576/style
+        - http://localhost:3000/products/1/style
 
    4. **Sample Data:**
 
@@ -153,8 +157,7 @@
 4. ### Related Product [Method: GET Request]:
 
    1. **API End Point:**
-      - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id/related
-      - Client API: http://localhost:3000/api/products/:product_id/related
+      - Client API: http://localhost:3000/products/[product_id]/related
    2. **Purpose:**
       - Returns the id's of products related to the specified product.
    3. **Parameters:**
@@ -163,7 +166,7 @@
       | product_id | integer | Required ID of the Product requested |
 
       - _Related Product Parameter Example_:
-        - http://localhost:3000/api/products/61576/related
+        - http://localhost:3000/products/1/related
 
    4. **Sample Data:**
 
@@ -174,6 +177,27 @@
       8,
       7
     ],
+   ```
+
+5. ### Delete Product Information [Method: DELETE Request]:
+
+   1. **API End Point:**
+      - Client API: http://localhost:3000/products/[product_info]/?id=[product_id]
+   2. **Purpose:**
+      - Delete specific product information or the individual product for a given product id.
+   3. **Parameters:**
+      | Parameter | Type | Description |
+      | ---------- | ------- | ------------------------------------ |
+      | product_info | string | Required product information to be deleted. <p>Accepted values are: productInfo, style, feature, photo, sku, or related</p> |
+      | product_id | integer | Required ID of the Product requested |
+
+      - _Delete Product Information Example_:
+        - http://localhost:3000/products/style/?id=1
+
+   4. **Response:**
+
+   ```
+    Successful Delete
    ```
 
 ---

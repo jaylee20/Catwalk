@@ -36,8 +36,7 @@ const deleteQueries = [
 
 module.exports = {
   getProducts: (data, callback) => {
-    const page = data.page || 1;
-    const count = data.count || 5;
+    const { page, count } = data;
 
     pool.query(topFiveProducts, [page, count], (err, result) => {
       if (err) {

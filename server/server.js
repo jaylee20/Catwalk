@@ -22,11 +22,27 @@ app.get('/*', (req, res) => {
     .filter((char) => char !== '');
   const firstRoute = splitURL[0];
   const id = splitURL[1];
+  const hasParams = !splitURL[1] ? false : splitURL[1].split('')[0] === '?';
 
   switch (firstRoute) {
     case 'products':
-      if (splitURL.length === 1) {
-        getProducts((err, data) => {
+      if (splitURL.length === 1 || hasParams) {
+        let params = {
+          page: 1,
+          count: 5,
+        };
+
+        if (hasParams) {
+          const results = splitURL[1].split('&');
+          const page = results[0].includes('count') ? 1 : results[0].split('=')[1];
+          const count = results[0].includes('count') ? results[0].split('=')[1] : !results[1] ? 5 : results[1].split('=')[1];
+          params = {
+            page,
+            count,
+          };
+        }
+
+        getProducts(params, (err, data) => {
           if (err) {
             res.status(404).send(err);
           } else {
